@@ -1,0 +1,18 @@
+/etc/systemd/system/ticket-test.service
+
+#Contents of systemd.service
+[Unit]
+Description=Ticket System Test Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/ticket-system/ticket-test
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+systemctl [start, stop, restart, status, enable, disable, daemon-reload] {FILE}
+
+journalctl -u {FILE} -f
