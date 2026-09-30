@@ -16,3 +16,54 @@ WantedBy=multi-user.target
 systemctl [start, stop, restart, status, enable, disable, daemon-reload] {FILE}
 
 journalctl -u {FILE} -f
+
+
+    inline static constexpr const char* tableCreate =R"SQL(
+
+		CREATE TABLE requests (
+		id INTEGER PRIMARY KEY AUTOINCREMENT, 
+		user_id INTEGER NOT NULL, 
+
+		reason TEXT NOT NULL, 
+
+		requested_duration INTEGER NOT NULL, 
+
+		status TEXT NOT NULL DEFAULT 'pending', 
+
+		created_at TEXT NOT NULL, 
+		approved_at TEXT, 
+		expires_at TEXT, 
+
+		approved_by INTEGER, 
+
+		FOREIGN KEY (user_id) REFERENCES users(id), 
+		FOREIGN KEY (approved_by) REFERENCES users(id) 
+		);
+
+
+		CREATE TABLE request_log (
+		id INTEGER PRIMARY KEY, 
+		request_id INTEGER NOT NULL, 
+
+		event TEXT NOT NULL, 
+		timestamp TEXT NOT NULL, 
+
+		ip_address TEXT, 
+		device_name TEXT, 
+
+		performed_by INTEGER, 
+
+		FOREIGN KEY (request_id) REFERENCES requests(id), 
+		FOREIGN KEY (performed_by) REFERENCES users(id)
+		);
+
+
+		CREATE TABLE IF NOT EXISTS users(
+		id INTEGER PRIMARY KEY, 
+		username TEXT NOT NULL UNIQUE 
+		display_name TEXT NOT NULL 
+		email TEXT NOT NULL UNIQUE 
+		role TEXT NOT NULL DEFAULT 'user'
+		);
+
+		)SQL";

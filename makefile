@@ -8,7 +8,7 @@ SRC = src/*.cpp
 
 
 build:
-	$(CXX) $(CXXFLAGS) $(SRC) $(LDLIBS) -o $(TARGET)
+	time $(CXX) $(CXXFLAGS) $(SRC) $(LDLIBS) -o $(TARGET)
 
 run: build
 	./$(TARGET)
